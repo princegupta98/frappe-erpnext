@@ -202,3 +202,186 @@ inside app modules
 
 IN Website - 
 	Home -> Build -> Module Def -> Add New -> Module name, select app -> Save Module
+
+# Create New Doctype
+
+IN Website - 
+	Home -> Build -> Doctype -> Add New Doctype-> 
+		Enter Doctype name, Select Module
+			Add Section
+				Add Field
+					Enter Field Label
+					Enter Field Type
+					Enter Field Name (for programming purpose)
+						Save
+
+	It will create "new database table"
+
+Go to Doctype list -> Add new Doctype
+
+we can check doctype controlling files in our app module doctype directory
+and to see table desc added in mariadb we can
+
+access mariadb:
+bench mariadb
+
+access newly created table using tab prefix then doctype name
+desc `tabDemo Doctype`;
+
+select * from `tabDemo Doctype`;
+
+exit query results 
+	q
+
+exit mariadb console
+	ctrl + d
+
+# Doctype | DocField
+
+Add a new Field in doctype and try with differrent Field type(dt)
+
+	Link Field type is used to link to other doctype and should be mentioned in Options in Add Field Form. when filling form linked doctype data will be shown as dropdown list
+
+	Select Field type is used to select bw options and available options should be mentioned in Options each in new line in Add Field Form
+
+	Data Field type - takes string ddata
+
+	Column Break and Section Break are used for styling the form
+
+# Doctype | DocField Properties
+
+Each field has properties
+	mandatory
+	in list view
+	in Standard Filter
+	default values of field
+	hidden
+	read only
+	set only once
+	condition (display depends on)
+	description
+
+# Doctype Naming
+
+Open Doctype Settings (Edit Doctype) ❌
+Open Doctype Settings > dot menu > Customize ✅
+
+1. Naming by Field- name in list will be shown based on field name
+	field:[fieldname]
+
+	Auto Name: field:prince
+
+	prince
+
+2. Naming by Prompt- name will be entered by user from input field
+	Prompt
+
+	Auto Name: Prompt
+
+	entered_name
+
+3. Naming by Series- Series by prefix (separated by a dot)
+	PRE.#####
+		# represents 0
+
+	Auto Name: PRE.#####
+
+	PRE00001, PRE00002, ...
+
+4. Naming by format: Replace all braced words (fieldnames, date words (DD, MM, YY), series) with their value. Outside braces, any characters can be used.
+	format:(MM) morewords(fieldname1)-(fieldname2)-(#####}
+
+	Auto Name: format:TTT-{MM}-{abc}-{####}	
+		MM DD YY should be capital
+
+	TTT-04-priince-0001
+
+5. naming_series: By Naming Series (field called naming_series must be present)
+
+	Add field called (From Edit Doctype)
+		Label : NSeries
+		Name : naming_series
+		Type : Select
+
+	Auto Name: naming_series:
+
+	Go to Document Naming Settings: 
+		Select Transaction: choose our Doctype from dropdown
+
+		Enter Series List:
+			TY-
+			RRR-.###
+			GHGH-.####
+
+	Add data to our doctype list:
+		Select series from NSeries when adding data
+
+# Doctype | Types of DocType
+
+DocType
+	Add DocType
+		name: Normal DocType
+		module: select programming module
+		fields: Add 2 fields of type Data
+
+	Add another DocType
+		name: Submittable DocType
+		module: select programming module
+		fields: Add 2 fields of type Data
+			check is Submittable
+
+		Now go to doctype list
+		add new doc data & save
+		then doc is saved and document is in draft state & submit
+		then doc is in submitted state and user cant edit, it is in read-only mode
+
+	Add another DocType
+		name: Single DocType
+		module: select programming module
+		fields: Add 2 fields of type Data
+			check is Single
+
+		Now for single doctype there is no list because only 1 data is there
+		no report generation
+		no multiple document submit
+
+	Add another DocType
+		name: Tree DocType
+		module: select programming module
+		fields: Add 2 fields of type Data
+			check is Tree
+
+		in tree doctype list switch to tree view
+
+		add child (check group node if child has sub-child) and in this view press edit to add data to node
+
+# Doctype | Child Doctype
+
+	Add New DocType
+		name: Child Doc
+		module: select programming module
+		fields: Add 2 fields of type Data
+			check is Child Table
+
+	no child doctype list
+	all child doctype belongs to some parent doctype, so we cant create child doctype data individually
+
+	Goto Single Doctype
+		Add field 
+			Child	- label
+			Table	- type
+			Child Doc - option
+
+	In Child Doc 
+		Enable grid view for all fields
+
+	Single Doctype
+		Add data
+			in child field we can add row as per child doctype
+
+	Check Table Structure
+		bench mariadb
+			desc `tabChild Doc`;
+			select * from `tabChild Doc`;
+			exit;
+
